@@ -32,6 +32,10 @@ jobs:
         with:
           gpg_private_key: ${{ secrets.PPA_GPG_PRIVATE_KEY }}
 
+
+      - name: Set version to ubuntu
+        run: sed -i 's/vanessa/jammy/' debian/changelog
+     
       - name: Run build
         run: |
           debuild -kstefan.lobbenmeier@gmail.com -S -sa
