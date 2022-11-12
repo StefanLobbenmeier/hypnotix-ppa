@@ -22,6 +22,10 @@ jobs:
       - uses: actions/checkout@v3
         with:
           repository: 'linuxmint/hypnotix'
+          
+          
+      - name: Install dependencies
+        run: sudo apt-get install devscripts
 
       - name: Run build
         run: |
