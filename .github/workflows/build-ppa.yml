@@ -29,7 +29,7 @@ jobs:
 
       - name: Run build
         run: |
-          debuild stefan.lobbenmeier@gmail.com -S -sa
+          debuild -kstefan.lobbenmeier@gmail.com -S -sa
           tree
           
       - name: Publish PPA
