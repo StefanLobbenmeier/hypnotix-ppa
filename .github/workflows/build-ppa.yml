@@ -34,9 +34,11 @@ jobs:
 
       - name: Run build
         run: |
-          debuild -kstefan.lobbenmeier@gmail.com -S -sa
-          tree
+          debuild -kstefan.lobbenmeier@gmail.com -S -s
+          pwd
+          tree ..
           
       - name: Publish PPA
         run: |
-          dput ppa:stefanlobbenmeier/hypnotix hypnotix_1.5_source.changes
+          cd ..
+          dput ppa:stefanlobbenmeier/hypnotix hypnotix_2.9_source.changes
