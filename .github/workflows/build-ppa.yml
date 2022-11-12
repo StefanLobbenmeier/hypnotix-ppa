@@ -19,20 +19,18 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/download-artifact@v2
+      - uses: actions/checkout@v3
         with:
-          name: release-source-code
-          path: artifacts
+          repository: 'linuxmint/hypnotix'
 
-      - name: Extract source code
+      - name: Run build
         run: |
-          cd $GITHUB_WORKSPACE/artifacts
-          mkdir deb-build && cp *.tar.gz deb-build && cd deb-build
-          tar xf *.tar.gz
+          debuild stefan.lobbenmeier@gmail.com -S -sa
+          tree
           
       - name: Publish PPA
         uses: yuezk/publish-ppa-package@develop
         with:
           repository: 'ppa:stefanlobbenmeier/hynotix'
           gpg_private_key: ${{ secrets.PPA_GPG_PRIVATE_KEY }}
-          pkgdir: '${{ github.workspace }}/artifacts/deb-build/globalprotect-openconnect*/'
+          pkgdir: 'hypnotix_1.5_source.changes'
