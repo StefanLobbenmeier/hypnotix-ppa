@@ -25,7 +25,7 @@ jobs:
           
           
       - name: Install dependencies
-        run: sudo apt-get install devscripts
+        run: sudo apt-get install devscripts debhelper
 
       - name: Run build
         run: |
