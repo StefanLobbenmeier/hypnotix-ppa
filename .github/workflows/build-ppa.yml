@@ -34,7 +34,7 @@ jobs:
 
       - name: Run build
         run: |
-          debuild -kstefan.lobbenmeier@gmail.com -S -s
+          debuild -kstefan.lobbenmeier@gmail.com -S -sa
           pwd
           tree ..
           
