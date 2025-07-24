@@ -48,7 +48,7 @@ jobs:
           echo "Hypnotix version: $VERSION"
 
       - name: Install dependencies
-        run: sudo apt-get install devscripts debhelper
+        run: sudo apt-get install devscripts debhelper build-essential
 
       - name: Import GPG key
         uses: crazy-max/ghaction-import-gpg@v5
