@@ -7,8 +7,8 @@ on:
   # Triggers the workflow on push or pull request events but only for the "main" branch
   push:
     branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
+  schedule:
+    - '0 0 1 4,10 *' # Runs at midnight on the first day of April and October
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
