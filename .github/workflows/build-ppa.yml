@@ -36,6 +36,7 @@ jobs:
           # Ubuntu Noble 24.04
           sed -i 's/wilma/noble/' debian/changelog
           sed -i 's/xia/noble/' debian/changelog
+          sed -i 's/zara/noble/' debian/changelog
           
           # Print the updated changelog
           cat debian/changelog
