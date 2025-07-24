@@ -34,15 +34,33 @@ jobs:
 
 
       - name: Set version to ubuntu
-        run: sed -i 's/vanessa/jammy/' debian/changelog
-     
+        run: |
+          # See https://linuxmint.com/download_all.php for version names
+          
+          # Ubuntu Jammy 22.04
+          sed -i 's/vanessa/jammy/' debian/changelog
+          sed -i 's/vera/jammy/' debian/changelog
+          sed -i 's/victoria/jammy/' debian/changelog
+          sed -i 's/virginia/jammy/' debian/changelog
+          
+          # Ubuntu Noble 24.04
+          sed -i 's/wilma/noble/' debian/changelog
+          sed -i 's/xia/noble/' debian/changelog
+
       - name: Run build
         run: |
           debuild -kstefan.lobbenmeier@gmail.com -S -sa
           pwd
           tree ..
+
+      - name: Detect latest version
+        run: |
+            # Extract the version number from the changelog
+            VERSION=$(grep -oP 'hypnotix \(\K[0-9]+\.[0-9]+' debian/changelog | head -n 1)            
+            echo "VERSION=$VERSION" >> $GITHUB_ENV
+            echo "Hypnotix version: $VERSION"
           
       - name: Publish PPA
         run: |
           cd ..
-          dput ppa:stefanlobbenmeier/hypnotix hypnotix_2.9_source.changes
+          dput ppa:stefanlobbenmeier/hypnotix hypnotix_$VERSION_source.changes
