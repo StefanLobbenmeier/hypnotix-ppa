@@ -66,4 +66,4 @@ jobs:
       - name: Publish PPA
         run: |
           cd ..
-          dput ppa:stefanlobbenmeier/hypnotix hypnotix_$VERSION_source.changes
+          dput ppa:stefanlobbenmeier/hypnotix hypnotix_${{ env.VERSION }}_source.changes
