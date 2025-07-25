@@ -43,7 +43,7 @@ jobs:
         run: |
           # See https://linuxmint.com/download_all.php for version names
           
-          sed -i -E "s/^${{ matrix.package }} \(([^\)]+)\) [^;]+;/${{ matrix.package }} (\1-${{ matrix.versionName }}) ${{ matrix.versionName }};/" debian/changelog
+          sed -i -E "s/^${{ matrix.package }} \(([^\)]+)\) [^;]+;/${{ matrix.publishedPackageName }} (\1-${{ matrix.versionName }}) ${{ matrix.versionName }};/" debian/changelog
           
           # Print the updated changelog
           cat debian/changelog
@@ -51,9 +51,9 @@ jobs:
       - name: Detect latest version
         run: |
           # Extract the version number from the changelog
-          VERSION=$(grep -oP '${{ matrix.package }} \(\K[^\)]+(?=\))' debian/changelog | head -n 1)  
+          VERSION=$(grep -oP '${{ matrix.publishedPackageName }} \(\K[^\)]+(?=\))' debian/changelog | head -n 1)  
           echo "VERSION=$VERSION" >> $GITHUB_ENV
-          echo "${{ matrix.package }} version: $VERSION"
+          echo "${{ matrix.publishedPackageName }} version: $VERSION"
 
       - name: Install dependencies
         run: sudo apt-get install devscripts debhelper build-essential
