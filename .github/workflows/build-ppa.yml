@@ -14,29 +14,31 @@ on:
   workflow_dispatch:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
-jobs:       
+jobs:
+
   release-ppa:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        versionName:
+          - 'noble'
+          - 'oriole'
+          - 'plucky'
+        package:
+          - 'hypnotix'
+          - 'circle-flags'
+
 
     steps:
       - uses: actions/checkout@v3
         with:
-          repository: 'linuxmint/hypnotix'
+          repository: 'linuxmint/${{ matrix.package }}'
 
-      - name: Set version to ubuntu
+      - name: Set version to ubuntu ${{ matrix.versionName }}
         run: |
           # See https://linuxmint.com/download_all.php for version names
           
-          # Ubuntu Jammy 22.04
-          sed -i 's/vanessa/jammy/' debian/changelog
-          sed -i 's/vera/jammy/' debian/changelog
-          sed -i 's/victoria/jammy/' debian/changelog
-          sed -i 's/virginia/jammy/' debian/changelog
-          
-          # Ubuntu Noble 24.04
-          sed -i 's/wilma/noble/' debian/changelog
-          sed -i 's/xia/noble/' debian/changelog
-          sed -i 's/zara/noble/' debian/changelog
+          sed -i -E "s/^${{ matrix.package }} \(([^\)]+)\) [^;]+;/${{ matrix.package }} (\1-${{ matrix.versionName }}) ${{ matrix.versionName }};/" debian/changelog
           
           # Print the updated changelog
           cat debian/changelog
@@ -44,9 +46,9 @@ jobs:
       - name: Detect latest version
         run: |
           # Extract the version number from the changelog
-          VERSION=$(grep -oP 'hypnotix \(\K[0-9]+\.[0-9]+' debian/changelog | head -n 1)            
+          VERSION=$(grep -oP '${{ matrix.package }} \(\K[0-9]+\.[0-9]+' debian/changelog | head -n 1)            
           echo "VERSION=$VERSION" >> $GITHUB_ENV
-          echo "Hypnotix version: $VERSION"
+          echo "${{ matrix.package }} version: $VERSION"
 
       - name: Install dependencies
         run: sudo apt-get install devscripts debhelper build-essential
@@ -62,8 +64,8 @@ jobs:
           debuild -kstefan.lobbenmeier@gmail.com -S -sa
           pwd
           tree ..
-          
+
       - name: Publish PPA
         run: |
           cd ..
-          dput ppa:stefanlobbenmeier/hypnotix hypnotix_${{ env.VERSION }}_source.changes
+          dput ppa:stefanlobbenmeier/${{ matrix.package }} ${{ matrix.package }}_${{ env.VERSION }}_source.changes
