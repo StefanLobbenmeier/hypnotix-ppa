@@ -46,7 +46,7 @@ jobs:
       - name: Detect latest version
         run: |
           # Extract the version number from the changelog
-          VERSION=$(grep -oP '${{ matrix.package }} \(\K[0-9]+\.[0-9]+' debian/changelog | head -n 1)            
+          VERSION=$(grep -oP '${{ matrix.package }} \(\K[^\)]+(?=\))' debian/changelog | head -n 1)  
           echo "VERSION=$VERSION" >> $GITHUB_ENV
           echo "${{ matrix.package }} version: $VERSION"
 
