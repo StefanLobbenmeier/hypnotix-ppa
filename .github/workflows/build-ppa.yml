@@ -17,17 +17,14 @@ on:
 jobs:
 
   release-ppa:
+    needs: get-supported-versions
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        versionName:
-          - 'noble'
-          - 'oracular'
-          - 'plucky'
+        versionName: ${{ fromJson(needs.get-supported-versions.outputs.versions) }}
         package:
           - 'hypnotix'
           - 'circle-flags'
-
 
     steps:
       - uses: actions/checkout@v3
@@ -69,3 +66,17 @@ jobs:
         run: |
           cd ..
           dput ppa:stefanlobbenmeier/hypnotix ${{ matrix.package }}_${{ env.VERSION }}_source.changes
+
+  get-supported-versions:
+    runs-on: ubuntu-latest
+    outputs:
+      versions: ${{ steps.get-versions.outputs.versions }}
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Get supported Ubuntu versions
+        id: get-versions
+        run: |
+          VERSIONS=$(python3 get_supported_versions.py)
+          echo "versions=$VERSIONS" >> $GITHUB_OUTPUT
+          echo "Supported versions: $VERSIONS"
