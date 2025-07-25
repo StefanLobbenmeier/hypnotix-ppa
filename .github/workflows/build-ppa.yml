@@ -27,6 +27,11 @@ jobs:
         package:
           - 'hypnotix'
           - 'circle-flags'
+        include:
+          - package: 'hypnotix'
+            publishedPackageName: 'hypnotix'
+          - package: 'circle-flags'
+            publishedPackageName: 'circle-flags-svg'
 
 
     steps:
@@ -68,4 +73,4 @@ jobs:
       - name: Publish PPA
         run: |
           cd ..
-          dput ppa:stefanlobbenmeier/hypnotix ${{ matrix.package }}_${{ env.VERSION }}_source.changes
+          dput ppa:stefanlobbenmeier/hypnotix ${{ matrix.publishedPackageName }}_${{ env.VERSION }}_source.changes
