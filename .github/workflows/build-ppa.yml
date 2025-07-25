@@ -68,4 +68,4 @@ jobs:
       - name: Publish PPA
         run: |
           cd ..
-          dput ppa:stefanlobbenmeier/${{ matrix.package }} ${{ matrix.package }}_${{ env.VERSION }}_source.changes
+          dput ppa:stefanlobbenmeier/hypnotix ${{ matrix.package }}_${{ env.VERSION }}_source.changes
