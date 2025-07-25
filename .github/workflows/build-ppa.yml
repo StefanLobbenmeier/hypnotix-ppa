@@ -22,7 +22,7 @@ jobs:
       matrix:
         versionName:
           - 'noble'
-          - 'oriole'
+          - 'oracular'
           - 'plucky'
         package:
           - 'hypnotix'
